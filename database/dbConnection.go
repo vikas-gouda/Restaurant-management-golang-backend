@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -12,11 +13,26 @@ import (
 )
 
 func DBinstance() *mongo.Client {
-	err := godotenv.Load(".env")
-	if err != nil {
-		log.Fatal("Error loading .env file")
+
+	dbURIFlag := flag.String("DB_URI", "", "Database Connection String")
+	flag.Parse()
+
+	var connectionString string
+
+	// Via Command-line
+	if *dbURIFlag != "" {
+		connectionString = *dbURIFlag
+	} else if os.Getenv("DB_URI") != "" {
+		//check environment variable
+		connectionString = os.Getenv("DB_URI")
+	} else {
+		// check loading the env file
+		err := godotenv.Load(".env")
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
+		connectionString = os.Getenv("DB_URI")
 	}
-	connectionString := os.Getenv("DB_URI")
 
 	clientOptions := options.Client().ApplyURI(connectionString)
 
