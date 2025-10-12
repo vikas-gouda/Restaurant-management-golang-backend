@@ -36,9 +36,18 @@ Go to the link provided and copy the command and paste it in the terminal
 ```
 - Copy the command and run it
 ```bash
-  sudo docker pull vikasgouda/golang-restraunt-management
+  sudo docker pull vikasgouda/golang-restraunt-management:
 ```
+-Once pulled, run the container using the following command:
+```bash
+  sudo docker run -d -p 8080:8080 -e DB_URI="mongodb://username:password@host:port/dbname" vikasgouda/golang-restraunt-management
+```
+Optional
 
+-If you prefer, you can store your environment variables in a .env file, then run the container using 
+```bash
+  sudo docker run -d -p 8080:8080 --env-file .env vikasgouda/golang-restraunt-management
+```
     
 ## Tehnologies
 
