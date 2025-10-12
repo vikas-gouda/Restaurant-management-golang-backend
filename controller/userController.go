@@ -2,7 +2,6 @@ package controller
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -22,51 +21,45 @@ var userCollection *mongo.Collection = database.OpenCollection(database.Client, 
 
 func GetUsers() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		var c, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+		c, cancel := context.WithTimeout(context.Background(), 100*time.Second)
+		defer cancel()
 
 		recordPerPage, err := strconv.Atoi(ctx.Query("recordPerPage"))
 		if err != nil || recordPerPage < 1 {
 			recordPerPage = 10
 		}
 
-		page, err1 := strconv.Atoi(ctx.Query("page"))
-		if err1 != nil || page < 1 {
+		page, err := strconv.Atoi(ctx.Query("page"))
+		if err != nil || page < 1 {
 			page = 1
 		}
 
 		startIndex := (page - 1) * recordPerPage
-		startIndex, err = strconv.Atoi(ctx.Query("startIndex"))
 
-		matchStage := bson.D{{"$match", bson.D{{}}}}
-		projectStage := bson.D{
-			{
-				"$project", bson.D{
-					{"_id", 0},
-					{"total_count", 1},
-					{"user_items", bson.D{
-						{"$slice", []interface{}{"$data", startIndex, recordPerPage}},
-					}},
-				},
-			},
-		}
+		matchStage := bson.D{{"$match", bson.D{}}}
+		skipStage := bson.D{{"$skip", startIndex}}
+		limitStage := bson.D{{"$limit", recordPerPage}}
 
 		result, err := userCollection.Aggregate(c, mongo.Pipeline{
-			matchStage, projectStage,
+			matchStage, skipStage, limitStage,
 		})
-
-		defer cancel()
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "error ocured while listing user items"})
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "error occurred while listing users"})
 			return
 		}
 
 		var allUsers []bson.M
 		if err = result.All(c, &allUsers); err != nil {
-			log.Fatal(err.Error())
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
 		}
 
-		ctx.JSON(http.StatusOK, allUsers[0])
+		if len(allUsers) == 0 {
+			ctx.JSON(http.StatusOK, gin.H{"message": "no users found"})
+			return
+		}
 
+		ctx.JSON(http.StatusOK, allUsers)
 	}
 }
 
@@ -156,6 +149,7 @@ func SignUp() gin.HandlerFunc {
 func Login() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		var c, cancel = context.WithTimeout(context.Background(), 100*time.Second)
+		defer cancel()
 
 		var user models.User
 		var foundUser models.User
@@ -165,27 +159,28 @@ func Login() gin.HandlerFunc {
 			return
 		}
 
-		err := userCollection.FindOne(c, bson.M{"email": user.Email}).Decode(&user)
-
-		defer cancel()
+		// ✅ Decode into foundUser (not user)
+		err := userCollection.FindOne(c, bson.M{"email": user.Email}).Decode(&foundUser)
 		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": "user not found"})
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
 			return
 		}
 
-		passwordisValid, msg := VerifyPassword(user.Password, *&foundUser.Password)
-		defer cancel()
-		if passwordisValid != true {
-			ctx.JSON(http.StatusInternalServerError, gin.H{"error": msg})
+		// ✅ Correct order: (hash from DB, plain from input)
+		passwordIsValid, msg := VerifyPassword(foundUser.Password, user.Password)
+		if !passwordIsValid {
+			ctx.JSON(http.StatusUnauthorized, gin.H{"error": msg})
 			return
 		}
 
 		token, refreshToken, _ := helpers.GenerateAllTokens(foundUser.Email, foundUser.First_name, foundUser.Last_name, foundUser.User_id)
-
 		helpers.UpdateAllTokens(token, refreshToken, foundUser.User_id)
 
-		ctx.JSON(http.StatusOK, foundUser)
+		// Optionally, send tokens in response
+		foundUser.Token = token
+		foundUser.Refresh_token = refreshToken
 
+		ctx.JSON(http.StatusOK, foundUser)
 	}
 }
 
@@ -198,15 +193,10 @@ func HashPassword(password string) string {
 	return string(bytes)
 }
 
-func VerifyPassword(userPassword string, providedPassword string) (bool, string) {
-	err := bcrypt.CompareHashAndPassword([]byte(providedPassword), []byte(userPassword))
-	check := true
-	msg := ""
-
+func VerifyPassword(hashedPassword string, plainPassword string) (bool, string) {
+	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(plainPassword))
 	if err != nil {
-		msg = fmt.Sprintf("Email or password is incorrect")
-		check = false
+		return false, "Email or password is incorrect"
 	}
-
-	return check, msg
+	return true, ""
 }
