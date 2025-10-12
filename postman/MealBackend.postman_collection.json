@@ -1,0 +1,596 @@
+{
+	"info": {
+		"_postman_id": "d0259148-4a0a-4477-9215-a85de646c96f",
+		"name": "MealBackend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "29217551"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "GetAllUsers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{server}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "GetSingleUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/users/:user_id",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"users",
+								":user_id"
+							],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": "68eb94d3c859032918df4a78"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostLoginUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Password\":\"1234567\",\r\n    \"Email\":\"admin2@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server}}/users/login"
+					},
+					"response": []
+				},
+				{
+					"name": "PostSingupUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"First_name\":\"admin2\",\r\n    \"Last_name\":\"adminSurname\",\r\n    \"Password\":\"1234567\",\r\n    \"Email\":\"admin2@gmail.com\",\r\n    \"Phone\":\"1234567\",\r\n    \"User_type\":\"ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server}}/users/signup"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TableRoutes",
+			"item": [
+				{
+					"name": "GetTables",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InZpa2FzMTIzNEBnbWFpbC5jb20iLCJGaXJzdF9uYW1lIjoiVmlrYXMiLCJMYXN0X25hbWUiOiJHb3VkYSIsIlVpZCI6IjY4ZWI5MGQ2ZDllZmE4Y2QyY2M4ZWUzYSIsImV4cCI6MTc2MDM1NDkwMn0.JCtMCTk16C3x9njSY6eDpnf3gSbh5TmfIY1dkeUyPaQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/tables?token",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"tables"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSingleTable",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InZpa2FzMTIzNEBnbWFpbC5jb20iLCJGaXJzdF9uYW1lIjoiVmlrYXMiLCJMYXN0X25hbWUiOiJHb3VkYSIsIlVpZCI6IjY4ZWI5MGQ2ZDllZmE4Y2QyY2M4ZWUzYSIsImV4cCI6MTc2MDM1NDkwMn0.JCtMCTk16C3x9njSY6eDpnf3gSbh5TmfIY1dkeUyPaQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/tables/:table_id",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"tables",
+								":table_id"
+							],
+							"variable": [
+								{
+									"key": "table_id",
+									"value": "68eba68802f3167d6c4e5bc4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostTables",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InZpa2FzMTIzNEBnbWFpbC5jb20iLCJGaXJzdF9uYW1lIjoiVmlrYXMiLCJMYXN0X25hbWUiOiJHb3VkYSIsIlVpZCI6IjY4ZWI5MGQ2ZDllZmE4Y2QyY2M4ZWUzYSIsImV4cCI6MTc2MDM1NDkwMn0.JCtMCTk16C3x9njSY6eDpnf3gSbh5TmfIY1dkeUyPaQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Number_of_guests\":4,\r\n    \"Table_number\":2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server}}/tables"
+					},
+					"response": []
+				},
+				{
+					"name": "PatchSingleTable",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/tables/:table_id",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"tables",
+								":table_id"
+							],
+							"variable": [
+								{
+									"key": "table_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OrderRoutes",
+			"item": [
+				{
+					"name": "PatchSingleOrder",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/orders/:order_id",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"orders",
+								":order_id"
+							],
+							"variable": [
+								{
+									"key": "order_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostOrder",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InZpa2FzMTIzNEBnbWFpbC5jb20iLCJGaXJzdF9uYW1lIjoiVmlrYXMiLCJMYXN0X25hbWUiOiJHb3VkYSIsIlVpZCI6IjY4ZWI5MGQ2ZDllZmE4Y2QyY2M4ZWUzYSIsImV4cCI6MTc2MDM1NDkwMn0.JCtMCTk16C3x9njSY6eDpnf3gSbh5TmfIY1dkeUyPaQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Table_id\":\"68eba68802f3167d6c4e5bc4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server}}/orders"
+					},
+					"response": []
+				},
+				{
+					"name": "GetSingleOrder",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/orders/:order_id",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"orders",
+								":order_id"
+							],
+							"variable": [
+								{
+									"key": "order_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOrders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{server}}/orders"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OrderItemRoutes",
+			"item": [
+				{
+					"name": "GetOrderItems",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{server}}/orderItems"
+					},
+					"response": []
+				},
+				{
+					"name": "GetSingleOrderItem",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/ordersItems/:orderItems_id",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"ordersItems",
+								":orderItems_id"
+							],
+							"variable": [
+								{
+									"key": "orderItems_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostOrderItems",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{server}}/ordersItems"
+					},
+					"response": []
+				},
+				{
+					"name": "PatchOrderItems",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/orderItems/:orderItem_id",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"orderItems",
+								":orderItem_id"
+							],
+							"variable": [
+								{
+									"key": "orderItem_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MenuRoutes",
+			"item": [
+				{
+					"name": "PatchSingleMenu",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/menus/:menu_id",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"menus",
+								":menu_id"
+							],
+							"variable": [
+								{
+									"key": "menu_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostMenu",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6ImFkbWluMkBnbWFpbC5jb20iLCJGaXJzdF9uYW1lIjoiYWRtaW4yIiwiTGFzdF9uYW1lIjoiYWRtaW5TdXJuYW1lIiwiVWlkIjoiNjhlYjk0ZDNjODU5MDMyOTE4ZGY0YTc4IiwiZXhwIjoxNzYwMzU4OTczfQ.NjLnt2Udhq2a-mwNOI48SN7a63i1plwLarOd_uEgRQc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\":\"Slider Menu\",\r\n    \"Category\":\"Food\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server}}/menus"
+					},
+					"response": []
+				},
+				{
+					"name": "GetSingleMenu",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/menus/:menu_id",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"menus",
+								":menu_id"
+							],
+							"variable": [
+								{
+									"key": "menu_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetMenus",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{server}}/menus"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "InvoiceRoutes",
+			"item": [
+				{
+					"name": "PatchSingleInvoice",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/invoices/:invoices_id",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"invoices",
+								":invoices_id"
+							],
+							"variable": [
+								{
+									"key": "invoices_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostInvoice",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{server}}/invoice"
+					},
+					"response": []
+				},
+				{
+					"name": "GetSingleInvoice",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/invoices/:invoice_id",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"invoices",
+								":invoice_id"
+							],
+							"variable": [
+								{
+									"key": "invoice_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetInvoices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{server}}/invoices"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FoodRoutes",
+			"item": [
+				{
+					"name": "PatchSingleFood",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/foods/:food_id",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"foods",
+								":food_id"
+							],
+							"variable": [
+								{
+									"key": "food_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostFoods",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6ImFkbWluMkBnbWFpbC5jb20iLCJGaXJzdF9uYW1lIjoiYWRtaW4yIiwiTGFzdF9uYW1lIjoiYWRtaW5TdXJuYW1lIiwiVWlkIjoiNjhlYjk0ZDNjODU5MDMyOTE4ZGY0YTc4IiwiZXhwIjoxNzYwMzU4OTczfQ.NjLnt2Udhq2a-mwNOI48SN7a63i1plwLarOd_uEgRQc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Name\":\"Non-veg Slider 2\",\r\n    \"Price\":230,\r\n    \"Food_image\":\"image_link\",\r\n    \"Food_id\":\"02\",\r\n    \"Menu_id\":\"68eba2702cb6fbc64bdaf5c2\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server}}/foods"
+					},
+					"response": []
+				},
+				{
+					"name": "GetSingleFood",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}/foods/:food_id",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"foods",
+								":food_id"
+							],
+							"variable": [
+								{
+									"key": "food_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetFoods",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{server}}/foods"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
